@@ -27,7 +27,7 @@ class PostController extends Controller
             })
             ->with(['comments.user'])
             ->latest()
-            ->paginate(8);
+            ->paginate(7);
 
         return view('public-posts', compact('posts', 'categories', 'category'));
     }

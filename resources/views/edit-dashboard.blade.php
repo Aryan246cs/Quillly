@@ -1,86 +1,100 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Edit Profile</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
+@section('title', 'Edit Profile — Quillly')
 
-<body class="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen flex items-center justify-center px-4 text-gray-100">
-    <div class="bg-gray-800 p-8 rounded-xl shadow-2xl w-full max-w-2xl border border-gray-800">
-        <h1 class="text-3xl font-bold text-center text-indigo-400 mb-6">Edit Your Profile</h1>
+@section('content')
+<div class="min-h-screen flex items-center justify-center px-4 py-16 relative">
+    <div class="absolute inset-0 bg-gradient-to-br from-indigo-950/20 via-gray-950 to-purple-950/20 pointer-events-none"></div>
 
-        <form action="{{ route('dashboard.update') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
-            @csrf
-            @method('PUT')
+    <div class="relative w-full max-w-2xl">
+        <div class="mb-6">
+            <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-300 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                Back to Dashboard
+            </a>
+        </div>
 
-            <div>
-                <label class="block font-semibold text-gray-200 mb-1">Name</label>
-                <input type="text" name="name" value="{{ old('name', $user->name) }}"
-                    class="w-full bg-gray-800 text-gray-100 border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+        <div class="glass rounded-3xl p-8">
+            <div class="mb-8">
+                <h1 class="text-2xl font-bold text-white mb-1">Edit Profile</h1>
+                <p class="text-sm text-gray-500">Update your personal information.</p>
             </div>
 
-            <div>
-                <label class="block font-semibold text-gray-200 mb-1">Email</label>
-                <input type="email" name="email" value="{{ old('email', $user->email) }}"
-                    class="w-full bg-gray-800 text-gray-100 border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-            </div>
+            <form action="{{ route('dashboard.update') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
+                @csrf
+                @method('PUT')
 
-            <div>
-                <label class="block font-semibold text-gray-200 mb-1">Gender</label>
-                <div class="flex gap-6 mt-1 text-gray-300">
-                    <label class="flex items-center space-x-2">
-                        <input type="radio" name="gender" value="male" {{ $user->gender == 'male' ? 'checked' : '' }}
-                            class="accent-indigo-500">
-                        <span>Male</span>
-                    </label>
-                    <label class="flex items-center space-x-2">
-                        <input type="radio" name="gender" value="female" {{ $user->gender == 'female' ? 'checked' : '' }}
-                            class="accent-indigo-500">
-                        <span>Female</span>
-                    </label>
-                    <label class="flex items-center space-x-2">
-                        <input type="radio" name="gender" value="other" {{ $user->gender == 'other' ? 'checked' : '' }}
-                            class="accent-indigo-500">
-                        <span>Other</span>
-                    </label>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Name</label>
+                        <input type="text" name="name" value="{{ old('name', $user->name) }}"
+                               class="w-full bg-gray-900/80 border border-white/10 text-gray-100 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Email</label>
+                        <input type="email" name="email" value="{{ old('email', $user->email) }}"
+                               class="w-full bg-gray-900/80 border border-white/10 text-gray-100 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all">
+                    </div>
                 </div>
-            </div>
 
-            <div>
-                <label class="block font-semibold text-gray-200 mb-1">Date of Birth</label>
-                <input type="date" name="dob" value="{{ old('dob', $user->dob) }}"
-                    class="w-full bg-gray-800 text-gray-100 border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-            </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Gender</label>
+                    <div class="flex gap-4">
+                        @foreach(['male' => 'Male', 'female' => 'Female', 'other' => 'Other'] as $val => $label)
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="gender" value="{{ $val }}" {{ $user->gender == $val ? 'checked' : '' }} class="accent-indigo-500 w-4 h-4">
+                                <span class="text-sm text-gray-300">{{ $label }}</span>
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
 
-            <div>
-                <label class="block font-semibold text-gray-200 mb-1">State</label>
-                <input type="text" name="state" value="{{ old('state', $user->state) }}"
-                    class="w-full bg-gray-800 text-gray-100 border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-            </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Date of Birth</label>
+                    <input type="date" name="dob" value="{{ old('dob', $user->dob) }}"
+                           class="w-full bg-gray-900/80 border border-white/10 text-gray-100 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all">
+                </div>
 
-            <div>
-                <label class="block font-semibold text-gray-200 mb-1">District</label>
-                <input type="text" name="district" value="{{ old('district', $user->district) }}"
-                    class="w-full bg-gray-800 text-gray-100 border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-            </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">State</label>
+                        <input type="text" name="state" value="{{ old('state', $user->state) }}"
+                               class="w-full bg-gray-900/80 border border-white/10 text-gray-100 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">District</label>
+                        <input type="text" name="district" value="{{ old('district', $user->district) }}"
+                               class="w-full bg-gray-900/80 border border-white/10 text-gray-100 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all">
+                    </div>
+                </div>
 
-            <div>
-                <label class="block font-semibold text-gray-200 mb-1">Profile Image</label>
-                <input type="file" name="profile_image"
-                    class="w-full bg-gray-800 text-gray-100 border border-gray-700 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:bg-indigo-100 file:text-indigo-700 hover:file:bg-indigo-200" />
-            </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Profile Image</label>
+                    <input type="file" name="profile_image" accept="image/jpg,image/jpeg,image/png"
+                           class="w-full text-sm text-gray-400 bg-gray-900/80 border border-white/10 rounded-xl px-4 py-3 file:mr-4 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-medium file:bg-indigo-500/10 file:text-indigo-400 hover:file:bg-indigo-500/20 file:transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all">
+                    <p class="text-xs text-gray-600 mt-1.5">JPG, JPEG or PNG. Max 2MB.</p>
+                </div>
 
-            <div class="text-center pt-4">
-                <button type="submit"
-                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2 rounded-md transition duration-200 shadow-md">
-                    Update Profile
-                </button>
-            </div>
-        </form>
+                @if($errors->any())
+                    <div class="p-4 rounded-xl bg-red-500/10 border border-red-500/20">
+                        <ul class="text-sm text-red-400 space-y-1">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <div class="flex items-center justify-between pt-2">
+                    <a href="{{ route('dashboard') }}" class="px-5 py-2.5 rounded-xl glass text-gray-400 hover:text-white text-sm font-medium transition-all">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn-primary px-6 py-2.5 rounded-xl text-white font-semibold text-sm">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-</body>
-
-</html>
+</div>
+@endsection
