@@ -11,7 +11,7 @@ A full-stack blogging platform built with **Laravel 12**, **Tailwind CSS**, and 
 - Post categories and search/filter
 - Like and comment system (toggle likes, threaded comments)
 - User profile with avatar, location (state/district), gender, DOB
-- Personal blog report with engagement stats
+- Personal blog report with engagement statistics
 - Website analytics dashboard
 - Responsive dark UI with glassmorphism design
 
